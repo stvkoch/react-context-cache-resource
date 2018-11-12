@@ -1,18 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext, Suspense } from "react";
 
-import context from "./../../contexts/users";
+import usersContext from "./../../contexts/users";
+import routerContext from "./../../contexts/router";
 
 import List from "./../list";
 import ListItem from "./../list-item";
+import UserDetail from './../user-detail';
 
-export default function ListUsers() {
-  const { getResource } = useContext(context);
+export default function ListUsers({id}) {
+  const { getResource } = useContext(usersContext);
+  const { go } = useContext(routerContext);
 
-  const data = getResource("fetchUsers")({ id: 2, name: "Lise" });
+  const data = getResource("fetchUsers")({  });
 
   return (
     <List items={data}>
-      {user => <ListItem key={user.id}>{user.name}</ListItem>}
+      {user => <ListItem key={user.id}>
+          {user.id != id && <h2 onClick={()=>go('/users/' + user.id)}>{user.name}</h2>}
+          {user.id == id &&
+            <Suspense fallback={<div>Loading user detail...</div>}>
+              <UserDetail id={id} />
+            </Suspense>
+          }
+      </ListItem>}
     </List>
   );
 }

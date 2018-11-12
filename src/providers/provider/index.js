@@ -13,6 +13,7 @@ export default function Provider({
   children,
   context,
   initialItems = null,
+  externalResources = {},
   ...props
 }) {
   const setTick = useState(void 0)[1];
@@ -25,7 +26,7 @@ export default function Provider({
       const key = getKey(name, args);
 
       if (force || !lru.has(key)) {
-        const resource = props[name];
+        const resource = props[name] || externalResources[name];
         const promise = new Promise(function(resolve, reject) {
           resource.apply(null, args).then(function() {
             resolve.apply(null, arguments);
@@ -33,7 +34,7 @@ export default function Provider({
         });
 
         var promiseResource = {
-          status: "processing",
+          status: "pending",
           promise,
           args: undefined
         };

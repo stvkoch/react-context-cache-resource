@@ -1,18 +1,19 @@
 import React from "react";
+import axios from "axios";
 
 import RouterProvider from "./router";
-//import UserProvider from "./users";
 import Provider from "./provider";
 
 import usersContext from "./../contexts/users";
 import productsContext from "./../contexts/products";
 
 function fetchUsers(query) {
-  return new Promise(resolve =>
-    setTimeout(() => {
-      resolve([{ id: 1, name: "user" }, query]);
-    }, 2000)
-  );
+  return fetch("http://localhost:3001/people").then(resp => resp.json());
+}
+
+
+function fetchUser(query) {
+    return fetch("http://localhost:3001/people/"+query.id).then(resp => resp.json());
 }
 
 function fetchProducts(query, setData) {
@@ -26,10 +27,20 @@ function fetchProducts(query, setData) {
   });
 }
 
+const externalResources = {
+    loadImage: function(src) {
+        const image = new Image();
+        return new Promise(resolve => {
+            image.onload = () => setTimeout(() => resolve(src), 3000);
+            image.src = src;
+        });
+    }
+};
+
 export default function Providers({ children }) {
   return (
     <Provider context={productsContext} fetchProducts={fetchProducts}>
-      <Provider context={usersContext} fetchUsers={fetchUsers}>
+      <Provider context={usersContext} fetchUsers={fetchUsers} fetchUser={fetchUser} {...externalResources} >
         <RouterProvider>{children}</RouterProvider>
       </Provider>
     </Provider>
