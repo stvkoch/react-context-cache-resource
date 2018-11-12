@@ -7,9 +7,6 @@ export default function UserDetail({ id }) {
 
   const data = getResource("fetchUser")({ id });
 
-
-  if (!data) return null;
-
   function RenderImage({src}) {
       const srcImage = getResource("loadImage")(
           "http://localhost:3001/" + data.image
