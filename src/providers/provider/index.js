@@ -57,7 +57,7 @@ export default function Provider({
   }
 
   return (
-    <context.Provider value={{ getResource, ...props }}>
+    <context.Provider value={{ getResource }}>
       {children}
     </context.Provider>
   );
