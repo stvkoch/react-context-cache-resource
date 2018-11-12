@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import style from './styles.css';
+
 import Providers from "./providers";
 
 import RootAppRoutes from "./routes";

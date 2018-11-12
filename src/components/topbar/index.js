@@ -3,10 +3,10 @@ import Link from "./../link";
 
 export default function Topbar() {
   return (
-    <React.Fragment>
+    <div className="topbar">
       <Link path="/">Home</Link>
       <Link path="/users">Users</Link>
       <Link path="/products">Products</Link>
-    </React.Fragment>
+    </div>
   );
 }
